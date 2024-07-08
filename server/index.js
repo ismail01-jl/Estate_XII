@@ -1,9 +1,16 @@
 import express from 'express'
 import mongoose from 'mongoose';
 import dotenv from "dotenv";
-
 dotenv.config();
+//import cors from 'cors'
 const app = express();
+app.use(express.json());
+//app.use(cors())
+
+
+import userRouter from './routes/user.route.js'
+app.use('/api/users', userRouter);
+
 
 // data base connecting
 mongoose.connect(process.env.DATABASE)
