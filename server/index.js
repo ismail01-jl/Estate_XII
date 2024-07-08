@@ -1,9 +1,5 @@
 import express from 'express'
- const app=express()
-  app.listen(3007,()=>{
-    console.log('server is running')
-  })
-/*import mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -22,4 +18,4 @@ app.get("/", (req, res) => {
 });
 app.listen(process.env.PORT, () => {
     console.log(`Server is listening on port ${process.env.PORT}`);
-});*/
+});
