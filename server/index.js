@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from "dotenv";
 
 dotenv.config();
+const app = express();
 
 // data base connecting
 mongoose.connect(process.env.DATABASE)
@@ -11,7 +12,6 @@ mongoose.connect(process.env.DATABASE)
         console.log("Unable to connect to database", err);
         process.exit();
     });
-const app = express();
 // requête 
 app.get("/", (req, res) => {
     res.send("hello si ismail");
