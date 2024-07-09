@@ -29,11 +29,11 @@ app.listen(process.env.PORT, () => {
     console.log(`Server is listening on port ${process.env.PORT}`);
 });
 
-app.use((err , req , res , next )=>{
-    const statusCode= err.statusCode || 404;
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 404;
     const message = err.message || "Internal Server Error";
     return res.status(statusCode).json({
-        success:false,
+        success: false,
         message,
         statusCode,
     })
