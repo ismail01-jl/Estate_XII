@@ -10,6 +10,8 @@ app.use(express.json());
 
 import userRouter from './routes/user.route.js'
 app.use('/api/users', userRouter);
+import authRouter from './routes/auth.route.js'
+app.use('/api/auth', authRouter);
 
 
 // data base connecting
