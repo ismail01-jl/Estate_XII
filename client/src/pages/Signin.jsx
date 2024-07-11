@@ -5,7 +5,7 @@ import { login, loginSuccess, loginFailed } from '../redux/user/userSlice'
 
 export default function Signin() {
   const [formData, setformData] = useState({})
-  const { loading , errors } = useSelector((state) => state.user); 
+  const { loading , errors } = useSelector((state) => state.user);
   const navigate = useNavigate()
   const Dispatch = useDispatch()
   const handleChange = (e) => {
