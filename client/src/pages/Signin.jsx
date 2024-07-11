@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { Link , useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { login, loginSuccess, loginFailed } from '../redux/user/userSlice'
 
 export default function Signin() {
   const [formData, setformData] = useState({})
-  const [errors, setErrors] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const { loading , errors } = useSelector((state) => state.user); 
   const navigate = useNavigate()
+  const Dispatch = useDispatch()
   const handleChange = (e) => {
     setformData({
       ...formData,
@@ -14,8 +16,9 @@ export default function Signin() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault()
-    try{
-      setLoading(true)
+    try {
+      //setLoading(true)
+      Dispatch(login());
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -23,19 +26,22 @@ export default function Signin() {
       })
       const data = await res.json()
       if (data.success === false) {
-        setErrors(data.message)
-        setLoading(false)
+        //setLoading(false)
+        //setErrors(data.message)
+        Dispatch(loginFailed(data.message));
         return;
       }
-      setLoading(false)
-      setErrors(null)
+      //setLoading(false)
+      //setErrors(null)
+      Dispatch(loginSuccess(data));
       navigate('/')
       //console.log(data)
-    }catch(error){
-      setErrors(error.message)
-      setLoading(false)
+    } catch (error) {
+      //setLoading(false)
+      //setErrors(error.message)
+      Dispatch(loginFailed(error.message));
     }
-    
+
   }
 
   console.log(formData)
@@ -43,7 +49,7 @@ export default function Signin() {
     <div className='p-3 max-w-lg mx-auto'>
       <h2 className="text-3xl font-semibold text-center my-7">Sign In</h2>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        
+
         <input onChange={handleChange} type='email' placeholder='e-mail'
           className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600" id='email' />
         <input onChange={handleChange} type='password' placeholder='password'
@@ -53,9 +59,9 @@ export default function Signin() {
           type="submit"
           className='bg-green-700 text-white p-3 rounded-lg uppercase hover:bg-white hover:border-2 hover:border-green-700 hover:text-black disabled:opacity-80'
         >
-        {loading ? 'Loading...' : 'Sign In'}
+          {loading ? 'Loading...' : 'Sign In'}
         </button>
-       
+
         <p className="text-gray-600 text-sm">
           Don't have an account? <Link to="/signup" className="text-green-700 hover:text-green-800">Sign up</Link>
         </p>
