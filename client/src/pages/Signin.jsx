@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, loginSuccess, loginFailed } from '../redux/user/userSlice'
+import OAuth from '../components/OAuth'
 
 export default function Signin() {
   const [formData, setformData] = useState({})
@@ -61,7 +62,7 @@ export default function Signin() {
         >
           {loading ? 'Loading...' : 'Sign In'}
         </button>
-
+        <OAuth/>
         <p className="text-gray-600 text-sm">
           Don't have an account? <Link to="/signup" className="text-green-700 hover:text-green-800">Sign up</Link>
         </p>
