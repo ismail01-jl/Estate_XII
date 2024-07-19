@@ -7,23 +7,23 @@ export const test = (req, res) => {
     })
 }
 export const updateuser = async (req, res, next) => {
-    if (req.user.id !== req.params.id) return next(errorHandler(402, 'You are not authorized to do that !!'))
+    //if (req.user.id !== req.params.id) return next(errorHandler(401, 'You are not authorized to do that !!'));
+
     try {
         if (req.body.password) {
-            req.user.password = bcryptjs.hashSync(req.body.password, 10)
+            req.body.password = bcryptjs.hashSync(req.body.password, 10);
         }
         const updatedUser = await User.findByIdAndUpdate(req.params.id, {
             $set: {
-                username: req.body.name,
+                username: req.body.usernamee,
                 email: req.body.email,
                 password: req.body.password,
                 imageUrl: req.body.imageUrl
             }
-
-        }, { new: true })
+        }, { new: true });
         const { password, ...rest } = updatedUser._doc;
-        res.status(202).json(rest)
+        res.status(202).json(rest);
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
