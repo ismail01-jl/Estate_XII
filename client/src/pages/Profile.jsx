@@ -9,7 +9,10 @@ import {
 import {
   updateUserStart,
   updateUserFailure,
-  updateUserSuccess
+  updateUserSuccess,
+  deleteUserStart,
+  deleteUserFailure,
+  deleteUserSuccess
 } from '../redux/user/userSlice.js';
 import { useDispatch } from 'react-redux';
 import { app } from '../firebase.js';
@@ -85,6 +88,23 @@ export default function Profile() {
       Dispatch(updateUserFailure(error.message));
     }
   };
+  const handleDeleteUser = async (e) => {
+    try {
+      Dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentuser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        Dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      Dispatch(deleteUserSuccess(data))
+
+    } catch (error) {
+      Dispatch(deleteUserFailure(error.message))
+    }
+  }
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h2 className="text-3xl font-semibold text-center my-7">Profile</h2>
@@ -114,7 +134,7 @@ export default function Profile() {
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className='text-red-700 cursor-pointer'>Delete Account</span>
+        <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer'>Delete Account</span>
         <span className='text-red-700 cursor-pointer'>Sign out</span>
       </div>
       <p className='text-red-700 mt-5'>{error ? error : ''}</p>
