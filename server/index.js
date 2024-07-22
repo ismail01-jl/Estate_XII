@@ -14,7 +14,8 @@ import userRouter from './routes/user.route.js'
 app.use('/api/user', userRouter);
 import authRouter from './routes/auth.route.js'
 app.use('/api/auth', authRouter);
-
+import listingRouter from './routes/listing.route.js'
+app.use('/api/listing', listingRouter);
 
 // data base connecting
 mongoose.connect(process.env.DATABASE)
