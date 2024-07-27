@@ -19,7 +19,7 @@ import {
 } from '../redux/user/userSlice.js';
 import { useDispatch } from 'react-redux';
 import { app } from '../firebase.js';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 export default function Profile() {
@@ -30,6 +30,9 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [UpdateSuccess, setUpdateSuccess] = useState(false)
+  const [ShowListingsError, setShowListingsError] = useState(false)
+  const [userListings, setUserListings] = useState([]);
+  const [showListings, setShowListings] = useState(false); // State to toggle listings visibility
   const Dispatch = useDispatch();
 
   //console.log(formData)
@@ -109,12 +112,12 @@ export default function Profile() {
       Dispatch(deleteUserFailure(error.message))
     }
   }
-  const handleSignoutUser = async (e) =>{
+  const handleSignoutUser = async (e) => {
     try {
       Dispatch(SignOutUserStart());
       const res = await fetch('/api/auth/signout')
       const data = await res.json()
-      if(data.success === false) {
+      if (data.success === false) {
         Dispatch(SignOutUserFailure(data.message))
         return;
       }
@@ -123,6 +126,24 @@ export default function Profile() {
       Dispatch(SignOutUserFailure(error.message))
     }
   }
+
+  const handleShowListings = async () => {
+    setShowListings(!showListings); // Toggle the state
+    if (!showListings) {
+      try {
+        const res = await fetch(`/api/user/listings/${currentuser._id}`);
+        const data = await res.json();
+        if (data.success === false) {
+          setShowListingsError(true);
+          return;
+        }
+        setUserListings(data);
+      } catch (error) {
+        setShowListingsError(true);
+      }
+    }
+  };
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h2 className="text-3xl font-semibold text-center my-7">Profile</h2>
@@ -150,9 +171,9 @@ export default function Profile() {
         <button disabled={loading} className='bg-blue-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
           {loading ? 'Loading ...' : 'Update'}
         </button>
-       <Link to={'/create-listing'} className="bg-green-700 text-white rounded-lg p-3 text-center uppercase hover:opacity-95 disabled:opacity-80">
-        Create Listing
-       </Link>
+        <Link to={'/create-listing'} className="bg-green-700 text-white rounded-lg p-3 text-center uppercase hover:opacity-95 disabled:opacity-80">
+          Create Listing
+        </Link>
       </form>
       <div className="flex justify-between mt-5">
         <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer'>Delete Account</span>
@@ -160,7 +181,55 @@ export default function Profile() {
       </div>
       <p className='text-red-700 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700 mt-5 self-center'>{UpdateSuccess ? 'Success' : ''} </p>
+      <button
+        onClick={handleShowListings}
+        className='text-blue-800 w-full font-semibold  hover:underline'>
+        {showListings ? 'Hide Listings' : 'Show Listings'}
+      </button>
+      <p className='text-red-700 mt-5'>
+        {ShowListingsError ? 'Error showing Listings ' : ''}
+      </p>
+      {showListings && userListings.length > 0 && (
+        <div className='flex flex-col gap-4'>
+          <h1 className='text-center mt-7 text-2xl font-semibold'>
+            Your Listings
+          </h1>
+          {userListings.map((listing) => (
+            <div
+              key={listing._id}
+              className='border rounded-lg p-3 shadow-custom flex justify-between items-center gap-4'
+            >
+              <Link to={`/listing/${listing._id}`}>
+                <img
+                  src={listing.imageUrls[0]}
+                  alt='listing cover'
+                  className='h-16 w-16 object-contain transition-transform duration-300 ease-in-out transform hover:scale-110'
+                />
+              </Link>
+              <Link
+                className='text-slate-700 font-semibold  hover:underline truncate flex-1'
+                to={`/listing/${listing._id}`}
+              >
+                <p>{listing.name}</p>
+              </Link>
 
+              <div className='flex flex-col item-center'>
+                <button
+                  onClick={() => handleListingDelete(listing._id)}
+                  className='text-red-700 uppercase'
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
+                <Link to={`/update-listing/${listing._id}`}>
+                  <button className='text-blue-700 uppercase'>
+                    <i className="fa-solid fa-pencil"></i>
+                  </button>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
