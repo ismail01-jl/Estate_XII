@@ -226,10 +226,11 @@ export default function Profile() {
                 />
               </Link>
               <Link
-                className='text-slate-700 font-semibold  hover:underline truncate flex-1'
+                className='text-slate-700 font-semibold   truncate flex-1'
                 to={`/listing/${listing._id}`}
               >
-                <p>{listing.name}</p>
+                <p className='hover:underline'>{listing.name}</p>
+                <p className='font-light hover:underline'>{listing.regularPrice}$</p>
               </Link>
 
               <div className='flex flex-col item-center'>
@@ -239,7 +240,7 @@ export default function Profile() {
                 >
                   <i className="fa-solid fa-trash"></i>
                 </button>
-                <Link to={`/update-listing/${listing._id}`}>
+                <Link to={`/edit-listing/${listing._id}`}>
                   <button className='text-blue-700 uppercase'>
                     <i className="fa-solid fa-pencil"></i>
                   </button>
