@@ -12,6 +12,7 @@ import PrivateRouter from './components/PrivateRouter';
 import CreateListing from './pages/CreateListing';
 import EditListing from './pages/EditListing';
 import ViewListing from './pages/ViewListing';
+import Search from './pages/Search';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path='/edit-listing/:listingId' element={<EditListing />} />
         </Route>
         <Route path='/about' element={<About />} />
+        <Route path='/search' element={<Search />} />
         <Route path='/view-listing/:listingId' element={<ViewListing />} />
 
       </Routes>
