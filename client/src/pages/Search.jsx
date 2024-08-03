@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa'
-
+import ListingsCards from '../components/ListingsCards'
 export default function Search() {
     const navigate = useNavigate();
     const [sidebardata, setSidebardata] = useState({
@@ -99,7 +99,7 @@ export default function Search() {
     }
     return (
         <div className='flex flex-col md:flex-row'>
-            <div className='p-7 border-b-2 md:border-r-2 md:min-h-screen'>
+            <div className='p-6 border-b-2 md:border-r-2 md:min-h-screen'>
                 <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
                     <div className='flex items-center gap-2'>
                         <label className='font-semibold whitespace-nowrap '>Search</label>
@@ -198,8 +198,23 @@ export default function Search() {
                     </button>
                 </form>
             </div>
-            <div className='text-3xl font-semibold border-b p-3 text-black mt-5'>
-                <h1 className=''>Listing Results :</h1>
+            <div className='text-3xl font-semibold flex-1 border-b p-1 text-black mt-5'>
+                <h1 className='pl-7'>Listing Results :</h1>
+                <div className='p-7 flex flex-wrap gap-4'>
+                    {!loading && listings.length === 0 && (
+                        <p className='text-xl text-slate-700'>No listing found!</p>
+                    )}
+                    {loading && (
+                        <p className='text-xl text-slate-700 text-center w-full'>
+                            Loading...
+                        </p>
+                    )}
+                    {!loading &&
+                        listings &&
+                        listings.map((listing) => (
+                            <ListingsCards key={listing._id} listing={listing} />
+                        ))}
+                </div>
             </div>
         </div>
     )
