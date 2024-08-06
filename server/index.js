@@ -24,11 +24,10 @@ app.get('*', (req, res) => {
 })
 
 // data base connecting
-mongoose.connect(process.env.DATABASE)
-    .then(() => { console.log("DataBase Successfully Connected"); })
-    .catch(err => {
-        console.log("Unable to connect to database", err);
-        process.exit();
+mongoose.connect(process.env.DATABASE).then(()=>{
+    console.log("connected to database");
+    }).catch((err)=>{
+        console.log(err);
     });
 
 // requête 
