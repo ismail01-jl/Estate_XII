@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 //app.use(cors())
-
+const __dirname = path.resolve();
 
 import userRouter from './routes/user.route.js'
 app.use('/api/user', userRouter);
@@ -30,7 +30,7 @@ mongoose.connect(process.env.DATABASE)
         console.log("Unable to connect to database", err);
         process.exit();
     });
-const __dirname = path.resolve();
+
 // requête 
 app.get("/", (req, res) => {
     res.send("hello si ismail");
