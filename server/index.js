@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose';
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
+import path from 'path';
 dotenv.config();
 
 const app = express();
@@ -17,6 +18,11 @@ app.use('/api/auth', authRouter);
 import listingRouter from './routes/listing.route.js'
 app.use('/api/listing', listingRouter);
 
+app.use(express.static(path.join(__dirname, '/client/dist')))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+})
+
 // data base connecting
 mongoose.connect(process.env.DATABASE)
     .then(() => { console.log("DataBase Successfully Connected"); })
@@ -24,6 +30,7 @@ mongoose.connect(process.env.DATABASE)
         console.log("Unable to connect to database", err);
         process.exit();
     });
+const __dirname = path.resolve();
 // requête 
 app.get("/", (req, res) => {
     res.send("hello si ismail");
