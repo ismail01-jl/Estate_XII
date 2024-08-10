@@ -1,5 +1,5 @@
 import { FaSearch } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react';
 
@@ -27,8 +27,8 @@ export default function Header() {
             <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
                 <Link to='/'>
                     <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
-                        <sapn>TO.</sapn>
-                        <sapn className='text-green-700'>Estate</sapn>
+                        <span>TO.</span>
+                        <span className='text-green-700'>Estate</span>
                     </h1>
                 </Link>
                 <form onSubmit={handleSubmit} className='bg-slate-100 p-3 rounded-lg flex items-center'>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default function Contact({ listing }) {
     const [landlord, setLandlord] = useState(null);
     const [message, setMessage] = useState('');
-    
+
     const onChange = (e) => {
         setMessage(e.target.value);
     };
@@ -20,6 +20,12 @@ export default function Contact({ listing }) {
         };
         fetchLandlord();
     }, [listing.userRef]);
+
+    const createMailtoLink = () => {
+        const subject = `Regarding ${listing.name}`;
+        const body = message;
+        return `mailto:${landlord.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
     return (
         <>
             {landlord && (
@@ -37,14 +43,21 @@ export default function Contact({ listing }) {
                         onChange={onChange}
                         placeholder='Enter your message here...'
                         className='w-full border p-3 rounded-lg'
-                    ></textarea>
+                    >
+                    </textarea>
 
-                    <Link
-                        to={`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
+                    <a
+                        href={createMailtoLink()}
                         className='bg-slate-700 text-white text-center p-3 uppercase rounded-lg hover:opacity-95'
+                        onClick={(e) => {
+                            if (!message) {
+                                e.preventDefault();
+                                alert('Please enter a message before sending.');
+                            }
+                        }}
                     >
                         Send Message
-                    </Link>
+                    </a>
                 </div>
             )}
         </>
