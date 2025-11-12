@@ -9,7 +9,7 @@ export const verifyToken = (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) return next(errorHandler(403, 'Forbidden'));
 
-        console.log('Decoded user:', user); // Check what the user object contains
+        console.log('Decoded user:', user); 
 
         req.user = user;
         next();
